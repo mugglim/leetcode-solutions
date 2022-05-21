@@ -5,14 +5,19 @@
 var invertTree = function(root) {
     const invert = (node) => ([node.left, node.right] = [node.right, node.left]);
     
-    const traverse = (node) => {
-        if(!node) return;
+    
+    const queue = [root];
+    
+    while(queue.length > 0){
+        const node = queue.shift();
         
-        traverse(node.left);
-        traverse(node.right);
-        invert(node);
+        if(node){
+            invert(node);
+            if(node.left) queue.push(node.left);
+            if(node.right) queue.push(node.right);
+        }
+        
     }
     
-    traverse(root);
     return root;
 };
