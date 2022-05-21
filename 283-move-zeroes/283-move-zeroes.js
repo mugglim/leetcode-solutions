@@ -9,10 +9,7 @@ var moveZeroes = function(nums) {
     const swap = (lo,hi) => ([nums[lo], nums[hi]] = [nums[hi], nums[lo]]);
 
     for(let lo=0; lo < n ; lo += 1){
-        if(nums[hi] !== 0) {
-            hi += 1;
-            continue;
-        }
+        if(nums[hi] !== 0) hi = lo;
         
         while(hi < n && nums[hi] == 0) hi += 1;        
         if(hi < n) swap(lo,hi);
