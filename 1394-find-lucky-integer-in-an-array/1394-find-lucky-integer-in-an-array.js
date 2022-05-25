@@ -3,15 +3,17 @@
  * @return {number}
  */
 var findLucky = function(arr) {
-    const counts = new Array(501).fill(0);
+    const countMap = new Map();
     let answer = -1;
     
-    arr.forEach(v => counts[v] += 1);
-    
-    counts.forEach((count,i) => {
-        if(i > 0 && i === count) answer = Math.max(answer, count);
+    arr.forEach(n => {
+        if(!countMap.has(n)) countMap.set(n, 0);
+        countMap.set(n, countMap.get(n) + 1)
     })
     
+    countMap.forEach((count,key) => {
+        if(count === key) answer = Math.max(answer, count);
+    })
     
     return answer;
 };
