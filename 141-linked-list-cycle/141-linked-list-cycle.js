@@ -10,15 +10,20 @@
  * @param {ListNode} head
  * @return {boolean}
  */
-var hasCycle = function(head) {
-    const visited = new Set();
-    let curr = head;
+var hasCycle = function(head) { 
+    // slow-fast techinc ref : https://iq.opengenus.org/fast-and-slow-pointer-technique/
+    if(!head) return false;
     
-    while(curr){
-        if(visited.has(curr)) return true;
-        visited.add(curr);
-        curr = curr.next;
-    }
+    let slow = head;
+    let fast = head.next;
+    
+    while(slow && fast){
+        if(slow === fast) return true;
+        if(!fast || !fast.next) return false;
+        
+        slow = slow.next;
+        fast = fast.next.next;
+    } 
     
     return false;
 };
