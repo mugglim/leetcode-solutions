@@ -21,34 +21,27 @@ var maxAreaOfIsland = function(grid) {
         return y < 0 || y >= n || x < 0 || x >= m;
     }
     
-    const bfs = (y,x) => {
-        const queue = [[y,x]];
+    const dfs = (y,x) => {        
+        if(isNotRange(y,x)) return 0;
+        if(visited[y][x]) return 0;
+        if(grid[y][x] === 0) return 0;
+            
         let mapArea = 1;
         visited[y][x] = true;
         
-        while(queue.length){
-            const [y,x] = queue.shift();
-            
-            for(const [dy,dx] of dirs){
-                const [ny,nx] = [y+dy, x+dx];
-                
-                if(isNotRange(ny,nx)) continue
-                if(visited[ny][nx]) continue
-                if(grid[ny][nx] === 0) continue
-                
-                visited[ny][nx] = true;
-                queue.push([ny,nx]);
-                mapArea += 1;
-            }
+        for(const [dy,dx] of dirs){
+            const [ny,nx] = [y+dy, x+dx];
+            mapArea += dfs(ny,nx);
         }
         
         return mapArea;
     }
     
+ 
     for(const y of range(n)){
         for(const x of range(m)){
             if(!visited[y][x] && grid[y][x] === 1){
-                maxArea = Math.max(maxArea, bfs(y,x));
+                maxArea = Math.max(maxArea, dfs(y,x));
             }
         }
     }
