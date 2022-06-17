@@ -13,12 +13,16 @@
  */
 
 var getTargetCopy = function(original, cloned, target) {
-    const find = (oNode, cNode, target) => {
-        if(!oNode || !cNode) return null;
+    const queue = [[original, cloned]];
+    
+    while(queue.length > 0){
+        const [oNode, cNode] = queue.shift();
+        
         if(oNode === target) return cNode
         
-        return find(oNode.left, cNode.left, target) || find(oNode.right, cNode.right, target);
+        if(oNode.left && cNode.left) queue.push([oNode.left, cNode.left])
+        if(oNode.right && cNode.right) queue.push([oNode.right, cNode.right])
     }
     
-    return find(original,cloned,target)
+    return null;
 };
