@@ -11,36 +11,26 @@
  * @return {TreeNode}
  */
 var increasingBST = function(root) {
-    const nums = [];
+    let newRoot;
+    let curr;
     
-    const dfs = (node) => {
+    const inOrder = (node) => {
         if(!node) return;
         
-        nums.push(node.val);
-        dfs(node.left);
-        dfs(node.right);
-    }
-    
-    const makeRightSkewedTree = () => {
-        let newRoot;
-        let curr = newRoot;
+        inOrder(node.left)
         
-        for(const num of nums){
-            if(!newRoot){
-                newRoot = new TreeNode(num);
-                curr = newRoot;
-            } else{
-                curr.right = new TreeNode(num);
-                curr = curr.right;
-            }
+        if(!newRoot){
+            newRoot = new TreeNode(node.val);
+            curr = newRoot;
+        } else{
+            curr.right = new TreeNode(node.val);
+            curr = curr.right;
         }
         
-        return newRoot;
+        inOrder(node.right);;
     }
     
+    inOrder(root);
     
-    dfs(root);
-    nums.sort((a,b) => a-b);
-    
-    return makeRightSkewedTree();
+    return newRoot;
 };
