@@ -1,20 +1,3 @@
-const getMid = (x,y) => Math.floor((x+y) / 2);
-
-const binarySearch = (nums, target) => {
-    let [lo, hi] = [0, nums.length-1];
-    
-    while(lo <= hi){
-        const mid = getMid(lo,hi);
-        
-        if(nums[mid] === target) return mid;
-        
-        if(nums[mid] < target) lo = mid + 1;
-        else hi = mid - 1;
-     }
-    
-    return -1;
-}
-
 /**
  * @param {number[][]} matrix
  * @param {number} target
@@ -22,16 +5,18 @@ const binarySearch = (nums, target) => {
  */
 var searchMatrix = function(matrix, target) {
     const [m,n] = [matrix.length, matrix[0].length];
+    let [row, col] = [0, n -1];
     
-    for(const row of matrix){
-        // (1) find target in row with binary search
-        const targetIndex = binarySearch(row, target);
+    
+    while(row < m && col >= 0){
+        const num = matrix[row][col];
         
-        // (2) validate targetIndex
-        if(targetIndex !== -1) return true;
+        if(num === target) return true;
+        
+        if(num > target) col -= 1
+        if(num < target) row += 1
     }
-    
-    // (3) target not found
+        
     return false;
 };
 
