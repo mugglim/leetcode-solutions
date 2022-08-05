@@ -6,20 +6,14 @@
 var combinationSum4 = function (nums, target) {
 	const dp = new Array(target + 1).fill(-1);
 
-	const backtrack = (x, depth = 1) => {
+	const backtrack = x => {
 		if (x === 0) return 1;
 		if (dp[x] >= 0) return dp[x];
 
-		let count = 0;
-
-		for (const num of nums) {
-			if (x >= num) {
-				count += backtrack(x - num, depth + 1);
-			}
-		}
-
+		const count = nums.reduce((acc,num) => acc + (x >= num ? backtrack(x-num) : 0), 0);
 		dp[x] = count;
-		return dp[x];
+		
+        return dp[x];
 	};
 
 	backtrack(target);
