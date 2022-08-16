@@ -3,24 +3,15 @@
  * @return {number}
  */
 var firstUniqChar = function(s) {
-    const charCounts = Array.from(new Array(26), () => [null, 0]);
+    const charCounts = new Array(26).fill(0);
     
-    Array.from(s).forEach((ch, index) => {
-        const chIndex = ch.charCodeAt(0) - 97;
-
-        if(charCounts[chIndex][0] === null){
-            charCounts[chIndex][0] = index;
-        }
-        
-        charCounts[chIndex][1] += 1;
-    })
+    for(let i = 0; i < s.length; i += 1){
+        charCounts[s.at(i).charCodeAt(0) - 97] += 1;
+    }
     
-    const uniqueChar = charCounts
-        .filter(([_, count]) => count === 1)
-        .sort((a,b) => a[0] - b[0])
+    for(let i = 0; i < s.length; i += 1){
+        if(charCounts[s.at(i).charCodeAt(0) - 97] === 1) return i;
+    }
     
-    
-    return uniqueChar.length > 0 ? uniqueChar[0][0] : -1;
+    return - 1;
 };
-
-
