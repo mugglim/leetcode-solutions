@@ -1,29 +1,38 @@
+import heapq
 INF = int(1e10)
 
 class Solution:
     def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int) -> int:
-        costs = [[INF] * n for _ in range(n)]
-        res = [0, INF] # node, count
-        
-        for i in range(n): 
-            costs[i][i] = 0
+        graph = [[] for _ in range(n)]  
+        res = [0, INF]
         
         for [a,b,c] in edges:
-            costs[a][b] = c
-            costs[b][a] = c
-        
-        for k in range(n):
-            for i in range(n):
-                for j in range(n):
-                    costs[i][j] = min(costs[i][j], costs[i][k] + costs[k][j])
+            graph[a].append([b,c])
+            graph[b].append([a,c])
         
         
         for i in range(n):
-            cnt = len([cost for cost in costs[i] if cost > 0 and cost <= distanceThreshold])
+            costs = [INF] * n
+            
+            costs[i] = 0
+            heap = [(0, i)]
+            
+            while heap:
+                cost, node = heapq.heappop(heap)
+                
+                if costs[node] < cost: continue
+                    
+                for [adj_node, adj_cost] in graph[node]:
+                    new_cost = adj_cost + cost
+                    
+                    if new_cost >= costs[adj_node] or new_cost > distanceThreshold: continue
+        
+                    costs[adj_node] = new_cost
+                    heapq.heappush(heap, (new_cost, adj_node))
+            
+            cnt = len([cost for cost in costs if cost > 0 and cost <= distanceThreshold])
             
             if cnt <= res[1]:
                 res = [i, cnt]
         
-        
         return res[0]
-        
